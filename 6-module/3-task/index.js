@@ -24,34 +24,39 @@ export default class Carousel {
 
     let arrowRight = carousel.querySelector(".carousel__arrow_right");
     let arrowLeft = carousel.querySelector(".carousel__arrow_left");
+    let carouselInner = carousel.querySelector(".carousel__inner");
 
     this.setArrow(this.activeIndex, arrowRight, arrowLeft, this.slides.length);
-
-    arrowRight.addEventListener( "click", () => {
+  
+    this.onArrowRight = function() {
       let carouselInnerWidth = carousel.querySelector(".carousel__inner").offsetWidth;
       this.activeIndex++;
-      document.querySelector(".carousel__inner").style.transform = `translateX(-${this.activeIndex * carouselInnerWidth}px)`;
+      carouselInner.style.transform = `translateX(-${this.activeIndex * carouselInnerWidth}px)`;
       this.setArrow(this.activeIndex, arrowRight, arrowLeft, this.slides.length);
-    });
+    };
+    this.onArrowRight = this.onArrowRight.bind(this);
+    arrowRight.addEventListener('click', this.onArrowRight);
 
-    arrowLeft.addEventListener( "click", () => {
+    this.onArrowLeft = function() {
       let carouselInnerWidth = carousel.querySelector(".carousel__inner").offsetWidth;
       this.activeIndex--;
-      document.querySelector(".carousel__inner").style.transform = `translateX(-${this.activeIndex * carouselInnerWidth}px)`;
+      carouselInner.style.transform = `translateX(-${this.activeIndex * carouselInnerWidth}px)`;
       this.setArrow(this.activeIndex, arrowRight, arrowLeft, this.slides.length);
-    });
-
+    };
+    this.onArrowLeft = this.onArrowLeft.bind(this);
+    arrowLeft.addEventListener('click', this.onArrowLeft);
+  
     let buttonAdd = carousel.getElementsByClassName('carousel__button');
-
     for (let button of buttonAdd) {
-      button.addEventListener('click', () => {
-        carousel.dispatchEvent(new CustomEvent("product-add", {
+      function onButtonClick() {
+        let event = new CustomEvent("product-add", {
           detail: button.closest('.carousel__slide').dataset.id,
           bubbles: true
-        }))
-      });
+        });
+        carousel.dispatchEvent(event);
+      };
+      button.addEventListener('click', onButtonClick);
     }
-
     return carousel;
   }
 

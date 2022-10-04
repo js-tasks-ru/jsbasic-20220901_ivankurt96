@@ -24,8 +24,8 @@ export default class ProductCard {
     return card;
   }
   addEvents(elem, id) {
-    elem.querySelector(".card__button").addEventListener("click", event => {
-      event.target.closest(".card").dispatchEvent(new CustomEvent("product-add", {
+    elem.querySelector(".card__button").addEventListener("click", () => {
+      elem.dispatchEvent(new CustomEvent("product-add", {
         detail: id,
         bubbles: true
       }))
