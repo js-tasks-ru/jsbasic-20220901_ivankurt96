@@ -57,6 +57,7 @@ export default class Carousel {
       };
       button.addEventListener('click', onButtonClick);
     }
+    
     return carousel;
   }
 
